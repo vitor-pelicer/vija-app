@@ -11,7 +11,7 @@ export default function Home({ navigation, route }) {
   }, [route.params?.post]);
 
   return (
-    <View >
+    <View className={"flex bg-orange-500"}>
       <Button
         title="Create post"
         onPress={() => navigation.navigate('CreatePost')}

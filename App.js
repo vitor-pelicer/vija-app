@@ -1,21 +1,16 @@
-import * as React from 'react';
-import { Button, View, Text, TextInput} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import CreatePostScreen from './screens/CreatePost';
-import TabScreen from './navigation/TabScreen';
+import React from 'react';
+import { withExpoSnack } from 'nativewind';
+import tn from 'twrnc';
 
-const Stack = createNativeStackNavigator();
+import { Text, View } from './components/BaseComponents';
 
-function App() {
+const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={TabScreen}/>
-        <Stack.Screen name="CreatePost"component={CreatePostScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View className="flex-1 items-center justify-center" style={tn`flex bg-red-200`}>
+      <Text className="text-orange-500 text-xl">
+        Try editing me! 🎉
+      </Text>
+    </View>
   );
 }
-
-export default App;
+export default withExpoSnack(App);
