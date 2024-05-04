@@ -1,22 +1,16 @@
 import * as React from 'react';
 import { Button, View, Text} from 'react-native';
-import tw from 'twrnc'
 
 export default function Home({ navigation, route }) {
-  React.useEffect(() => {
-    if (route.params?.post) {
-      // Post updated, do something with `route.params.post`
-      // For example, send the post to the server
-    }
-  }, [route.params?.post]);
 
   return (
-    <View className={"flex bg-orange-500"}>
-      <Button
-        title="Create post"
-        onPress={() => navigation.navigate('CreatePost')}
-      />
-      <Text style={{ margin: 10 }}>Post: {route.params?.post}</Text>
+    <View>
+        <View className={"h-[300] w-full bg-[#FF7A00] rounded-b-[20px] z-0 absolute"}/>
+      <View className={"flex items-center justify-center mt-10"}>
+        <Text className={"text-lg text-rose-60 text-white font-barcode"}>
+          VIJA </Text>
+      </View>
+
     </View>
   );
 }

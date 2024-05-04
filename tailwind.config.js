@@ -1,8 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./app.js', './components/**/*.{html,js}', './assets/**/*.{html,js}'],
+  content: ['./App.js', './components/**/*.{html,js}', './assets/**/*.{html,js}', 'screens/**/*.{html,js}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        barcode: ['Libre Barcode 128 Text Regular', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
