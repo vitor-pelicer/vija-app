@@ -4,7 +4,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        barcode: ['Libre Barcode 128 Text Regular', 'sans-serif'],
+        LibreBarcode: ['LibreBarcode', 'sans-serif'],
+        InterRegular: ['Inter-Regular', 'sans-serif'],
+        InterSemiBold: ['Inter-SemiBold', 'Inter-Regular'],
       },
     },
   },

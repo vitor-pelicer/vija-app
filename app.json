@@ -25,6 +25,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-font",
+      {
+        "Barcode128": ["./assets/fonts/LibreBarcode128Text-Regular.ttf"],
+        "Inter-Regular": ["./assets/fonts/Inter-Regular.ttf"],
+        "Inter-SemiBold": ["./assets/fonts/Inter-SemiBold.ttf"]
+      }
+    ]
   }
 }
