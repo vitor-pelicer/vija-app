@@ -10,7 +10,6 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 const Tab = createBottomTabNavigator();
-SplashScreen.preventAutoHideAsync();
 
 function App() {
 
