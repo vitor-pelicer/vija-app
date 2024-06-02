@@ -1,13 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from './screens/Home';
 import SettingsScreen from './screens/SettingsScreen';
 import TabBar from './components/TabBar';
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import StackHome from './navigation/StackHome';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,9 +36,9 @@ function App() {
         <Tab.Navigator tabBar={props => <TabBar {...props} />}>
           <Tab.Screen 
           name="Home"
-          component={Home} 
+          component={StackHome} 
           options={{
-            tabBarIcon: 'home', // Nome do ícone para a guia Home
+            tabBarIcon: 'home',
             headerShown: false
           }}
           />
@@ -47,7 +46,7 @@ function App() {
           name="Settings"
           component={SettingsScreen} 
           options={{
-            tabBarIcon: 'settings', // Nome do ícone para a guia Home
+            tabBarIcon: 'settings',
             headerShown: false
           }}
           />

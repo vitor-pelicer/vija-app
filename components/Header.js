@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { View, Text} from 'react-native';
+import { View, Text, TouchableOpacity} from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function Header({size, search}){
+export default function Header({size, search, navigation}){
 
   const [searchQuery, setSearchQuery] = React.useState('');
 
@@ -15,13 +16,25 @@ export default function Header({size, search}){
       <View className={hSize + " w-full bg-[#FF7A00] rounded-b-[20px] z-0 absolute"}/>
       <View className={"flex items-center justify-center mt-7"}>
         <Text className={"text-[60px] text-rose-60 text-white font-LibreBarcode mb-5"}>VIJO</Text>
-        <Searchbar
+        {search && <Searchbar
           placeholder="Pesquisar"
           onChangeText={setSearchQuery}
+          onIconPress={()=>search(searchQuery)}
           value={searchQuery}
-        />
+        />}
       </View>
-
+      {navigation && <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        className={"z-10 absolute m-8"}
+      >
+        <View className={"w-[40px] h-[40px]"}>
+          <Ionicons
+            name={"arrow-back"}
+            size={35}
+            color={"#FFF"}
+          />
+        </View>
+      </TouchableOpacity>}
     </View>
   )
 }
