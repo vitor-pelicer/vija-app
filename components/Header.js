@@ -15,7 +15,7 @@ export default function Header({size, search, navigation}){
     <View>
       <View className={hSize + " w-full bg-[#FF7A00] rounded-b-[20px] z-0 absolute"}/>
       <View className={"flex items-center justify-center mt-7"}>
-        <Text className={"text-[60px] text-rose-60 text-white font-LibreBarcode mb-5"}>VIJO</Text>
+        <Text className={"text-[60px] text-rose-60 text-white font-LibreBarcode mb-5"}>VIJA</Text>
         {search && <Searchbar
           placeholder="Pesquisar"
           onChangeText={setSearchQuery}

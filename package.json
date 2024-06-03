@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
@@ -16,6 +17,7 @@
     "expo-font": "~11.10.3",
     "expo-splash-screen": "^0.27.4",
     "expo-status-bar": "~1.11.1",
+    "firebase": "^10.12.2",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-icons": "^5.1.0",
@@ -31,6 +33,7 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.1.0",
+    "react-native-dotenv": "^3.4.11",
     "tailwindcss": "^3.3.2"
   },
   "private": true

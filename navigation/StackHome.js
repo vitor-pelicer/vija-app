@@ -1,9 +1,10 @@
 import * as React from 'react';
 import Home from '../screens/Home';
-import SettingsScreen from '../screens/SettingsScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import PostItem from '../screens/PostItem';
 import PostSearch from '../screens/PostSearch';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,20 @@ export default function StackHome() {
         options={{
           headerShown: false
         }} />
+        <Stack.Screen 
+          name="Login"
+          component={LoginScreen} 
+          options={{
+            headerShown: false
+          }}
+          />
+          <Stack.Screen 
+          name="Cadastro"
+          component={RegisterScreen} 
+          options={{
+            headerShown: false
+          }}
+          />
       </Stack.Navigator>
   );
 }
