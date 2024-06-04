@@ -24,20 +24,6 @@ export default function StackHome() {
         options={{
           headerShown: false
         }} />
-        <Stack.Screen 
-          name="Login"
-          component={LoginScreen} 
-          options={{
-            headerShown: false
-          }}
-          />
-          <Stack.Screen 
-          name="Cadastro"
-          component={RegisterScreen} 
-          options={{
-            headerShown: false
-          }}
-          />
       </Stack.Navigator>
   );
 }

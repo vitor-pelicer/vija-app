@@ -1,11 +1,11 @@
-import * as React from "react"
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import * as React from 'react';
+import { Image, Text, View } from 'react-native';
+import Header from '../components/Header';
+import { auth } from '../services/firebaseConfig';
+import LoginScreen from './LoginScreen';
 import { TextInput, Button } from 'react-native-paper';
-import { createUserWithEmailAndPassword, updateProfile  } from "firebase/auth";
-import { auth } from "../services/firebaseConfig";
 
-
-export default function RegisterScreen({ navigation, route }){
+export default function EditProfile() {
 
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -13,32 +13,12 @@ export default function RegisterScreen({ navigation, route }){
   const [loading, setLoading] = React.useState(false);
   const [secureText, setSecureText] = React.useState(true);
 
-  const handleRegister = ()=>{
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up 
-        const user = userCredential.user;
-        console.log(user)
-        updateProfile(user, {
-          displayName: name
-        }).then(() => {
-          console.log("Usuário com nome criado")
-        }).catch((error) => {
-          Alert.alert('Erro ao atualizar o nome', error.message);
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-  }
-
-
   return (
-    <View className={"flex-1 flex-col bg-grad items-center bg-slate-100"}>
-        <Text className={"text-[100px] text-rose-60 text-[#FF7A00] font-LibreBarcode z-10 mt-32"}>VIJA</Text>
-        <View className={"flex-1 flex-col w-screen z-10 mt-16 pt-16 items-center"}>
+    <>
+      <View className={'flex-1 flex flex-col justify-start bg-gray-100'} >
+        <Header size={"big"}/>
+        <View className={"flex flex-col items-center"}>
+          <Image source={require("../assets/user.png")} className={"h-[300px] w-[300px] rounded-full"}/>
           <TextInput
             mode="outlined"
             label="Nome"
@@ -71,11 +51,6 @@ export default function RegisterScreen({ navigation, route }){
             right={<TextInput.Icon icon="eye" onPress={()=>setSecureText(!secureText)}/>}
             className={"w-[90%] mt-4"}
           />
-          <View className={"flex justify-start w-screen"}>
-            <TouchableOpacity onPress={()=> navigation.pop()} className={"ml-6 mt-4"}>
-              <Text>Já tenho conta</Text>
-            </TouchableOpacity>
-          </View>
           <Button icon="account"
             mode="contained"
             onPress={() => handleRegister()}
@@ -84,8 +59,7 @@ export default function RegisterScreen({ navigation, route }){
             Cadastrar-se
           </Button>
         </View>
-        <Image source={require("../assets/Ellipse.png")} className={"h-[700px] w-screen z-1 absolute -bottom-24"}/>
-    </View>
+      </View>
+    </>
   )
-
 }

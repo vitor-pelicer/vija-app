@@ -6,6 +6,7 @@ import TabBar from '../components/TabBar';
 import StackHome from './StackHome';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import CreatePost from '../screens/CreatePost';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,28 +22,22 @@ function TabHome() {
             tabBarIcon: 'home',
             headerShown: false
           }}
+          
+          />
+          <Tab.Screen 
+          name="Anunciar"
+          component={CreatePost} 
+          options={{
+            tabBarIcon: 'add-circle',
+            headerShown: false
+          }}
+          
           />
           <Tab.Screen 
           name="Conta"
           component={Account} 
           options={{
-            tabBarIcon: 'person-circle-outline',
-            headerShown: false
-          }}
-          />
-          <Tab.Screen 
-          name="Login"
-          component={LoginScreen} 
-          options={{
-            tabBarIcon: 'flash-off',
-            headerShown: false
-          }}
-          />
-          <Tab.Screen 
-          name="Cadastro"
-          component={RegisterScreen} 
-          options={{
-            tabBarIcon: 'flash-off',
+            tabBarIcon: 'person-circle',
             headerShown: false
           }}
           />

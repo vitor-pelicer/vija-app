@@ -21,18 +21,32 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.vitorpelicer.vijaapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [[
-      "expo-font",
-      {
-        "Barcode128": ["./assets/fonts/LibreBarcode128Text-Regular.ttf"],
-        "Inter-Regular": ["./assets/fonts/Inter-Regular.ttf"],
-        "Inter-SemiBold": ["./assets/fonts/Inter-SemiBold.ttf"]
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "Barcode128": [
+            "./assets/fonts/LibreBarcode128Text-Regular.ttf"
+          ],
+          "Inter-Regular": [
+            "./assets/fonts/Inter-Regular.ttf"
+          ],
+          "Inter-SemiBold": [
+            "./assets/fonts/Inter-SemiBold.ttf"
+          ]
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9d3fd2ea-369d-4318-be94-64c1837d9d43"
       }
-    ]]
+    }
   }
 }

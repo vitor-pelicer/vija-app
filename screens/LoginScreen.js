@@ -1,11 +1,11 @@
 import * as React from "react"
-import { View, Text, Image, ImageBackground, Alert } from "react-native";
+import { View, Text, Image, ImageBackground, Alert, TouchableOpacity } from "react-native";
 import { TextInput, Button } from 'react-native-paper';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../services/firebaseConfig";
 
 
-export default function LoginScreen(){
+export default function LoginScreen({ navigation, route }){
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -55,6 +55,11 @@ export default function LoginScreen(){
             right={<TextInput.Icon icon="eye" onPress={()=>setSecureText(!secureText)}/>}
             className={"w-[90%] mt-4"}
           />
+          <View className={"flex justify-start w-screen"}>
+            <TouchableOpacity onPress={()=> navigation.push("Register")} className={"ml-6 mt-4"}>
+              <Text>Não tenho conta</Text>
+            </TouchableOpacity>
+          </View>
           <Button icon="account"
             mode="contained"
             onPress={() => handleLogin()}
