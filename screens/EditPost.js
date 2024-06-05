@@ -6,21 +6,22 @@ import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { auth } from '../services/firebaseConfig';
-import StackAccount from '../navigation/StackAccount';
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, update } from "firebase/database";
 import * as Storage from "firebase/storage";
-import uuid from 'react-native-uuid';
 
-export default function CreatePost({ navigation }) {
+
+export default function EditPost({ navigation, route }) {
+  const {data} = route.params
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean(auth.currentUser));
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [price, setPrice] = React.useState("");
-  const [type, setType] = React.useState("");
-  const [image, setImage] = React.useState([]);
+  const [title, setTitle] = React.useState(data.title);
+  const [description, setDescription] = React.useState(data.description);
+  const [price, setPrice] = React.useState(data.price);
+  const [type, setType] = React.useState(data.type);
+  const [image, setImage] = React.useState(data.images);
   const [loading, setLoading] = React.useState(false);
   const [submited, setSubmited] = React.useState(false);
+  const [remove, setRemove] = React.useState([]);
 
   const handleSubmit = async () => {
   if(title==='' && description==='' && price ==='' && type === '' && image.length ===0){
@@ -29,47 +30,48 @@ export default function CreatePost({ navigation }) {
   }
   setLoading(true);
   const db = getDatabase();
-  const userId = auth.currentUser.uid;
-  const postUid = uuid.v4();
-  const postPath = 'posts/' + userId + '/' + postUid
+
   let images = [];
 
   try{
     for(i=0; i<image.length; i++){
-      const blob = await uriToBlob(image[i])
-      const img= await uploadImages(blob, postUid)
-      images.push(img);
+      if(typeof image[i] === 'object'){
+        const blob = await uriToBlob(image[i])
+        const img= await uploadImages(blob, postUid)
+        images.push(img);
+      }else{
+        images.push(image[i])
+      }
     }
   } catch (e){
     Alert.alert("Erro", "Erro ao enviar as imagens.");
     return
   }
+  const postPath = 'posts/' + data.userId + '/' + data.postUid
 
   const postData = {
-    postUid,
-    userId,
+    postUid: data.postUid,
+    userId: data.userId,
     title,
     description,
     price,
     type,
-    userId,
     images,
   }
 
-  set(ref(db, postPath), postData
+  update(ref(db, postPath), postData
   ).then(() => {
     console.log('Dados enviados com sucesso!');
-    setTitle('');
-    setDescription('');
-    setPrice('');
-    setType('');
-    setImage([])
-    Alert.alert("Anúncio enviado!", "O anúncio foi postado com sucesso.")
-    navigation.navigate('Home');
+    Alert.alert("Anúncio atualizado!", "O anúncio foi postado com sucesso.")
+    navigation.pop();
   }).catch((error) => {
     console.error('Error writing data:', error);
     Alert.alert("Erro", "Erro ao enviar os dados.");
   });
+  //continua
+
+
+
   setLoading(false);
 
 }
@@ -104,16 +106,6 @@ const uriToBlob = async (uri) => {
 };
 
 
-
-
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    setIsLoggedIn(true);
-  } else {
-    setIsLoggedIn(false);
-  }
-});
-
   const handleChooseImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
@@ -127,7 +119,7 @@ auth.onAuthStateChanged((user) => {
     }
   };
 
-  const data = [
+  const dataList = [
     { key: 1, value: 'carro' },
     { key: 2, value: 'moto' },
     { key: 3, value: 'celular' },
@@ -136,6 +128,10 @@ auth.onAuthStateChanged((user) => {
   ];
 
   const removeImage = (removedIndex) => {
+    const img = image[i];
+    if(typeof img === 'string'){
+      setRemove([...remove, img])
+    }
     setImage(prevImages => {
       return prevImages.filter((item, index) => index !== removedIndex);
     });
@@ -143,9 +139,8 @@ auth.onAuthStateChanged((user) => {
 
   return (
     <>
-      {isLoggedIn &&
       <View className={'flex-1 flex flex-col justify-start bg-gray-100'} >
-        <Header/>
+        <Header navigation={navigation}/>
         {loading &&
           <View className={"flex-1 items-center justify-center z-20"}>
           <ActivityIndicator animating={true} color={'#FF7A00'} />
@@ -197,7 +192,7 @@ auth.onAuthStateChanged((user) => {
           <View className={"mt-2 w-[90%]"}>
             <SelectList
               setSelected={setType}
-              data={data}
+              data={dataList}
               save="value"
               placeholder='Tipo'
               fontFamily="Inter-Regular"
@@ -252,8 +247,7 @@ auth.onAuthStateChanged((user) => {
             Postar
           </Button>
         </View>
-      </View>}
-      {!isLoggedIn && <StackAccount/>}
+      </View>
     </>
   )
 }

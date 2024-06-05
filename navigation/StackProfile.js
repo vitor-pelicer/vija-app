@@ -7,6 +7,7 @@ import { auth } from '../services/firebaseConfig';
 import Profile from '../screens/Profile';
 import StackAccount from './StackAccount';
 import MyPosts from '../screens/MyPosts';
+import EditPost from '../screens/EditPost';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,13 @@ export default function StackProfile() {
             <Stack.Screen 
             name="MyPosts"
             component={MyPosts} 
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen 
+            name="EditPost"
+            component={EditPost} 
             options={{
               headerShown: false
             }}

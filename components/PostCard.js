@@ -21,7 +21,9 @@ export default function PostCard({ navigation, data }){
   }
   const handlePress = route.name==='MyPosts' ? handlePressMyPosts : handlePressHomeStack;
 
-  const handleEdit= ()=>{}
+  const handleEdit= ()=>{
+    navigation.navigate('EditPost', {data});
+  }
 
   const handleView= ()=>{
     navigation.navigate('Home');
@@ -40,7 +42,7 @@ export default function PostCard({ navigation, data }){
     <PaperProvider>
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-          <Menu.Item leadingIcon="pencil" onPress={() => {}} title="Editar" />
+          <Menu.Item leadingIcon="pencil" onPress={handleEdit} title="Editar" />
           <Menu.Item leadingIcon="eye" onPress={handleView} title="Visualizar" />
           <Menu.Item leadingIcon="delete" onPress={handleDelete} title="Excluir" />
         </Modal>
