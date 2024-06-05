@@ -4,6 +4,7 @@ import Header from "../components/Header"
 import PostCard from "../components/PostCard"
 import { getDatabase, ref, onValue } from "firebase/database";
 import listTargetObjects from '../utils/listTargetObjects';
+import EmptyWarning from "../components/EmptyWarning";
 
 export default function PostSearch({navigation, route}){
   const { type, title } = route.params
@@ -40,6 +41,7 @@ export default function PostSearch({navigation, route}){
         </Text>}
         {selectedPosts.map((data) => <PostCard key={data.postUid} navigation={navigation} data={data} />)}
       </ScrollView>
+      {posts.length===0 && <EmptyWarning/>}
     </View>
   )
 

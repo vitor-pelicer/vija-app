@@ -5,6 +5,7 @@ import TypeProductCarousel from '../components/TypeProductCarousel';
 import PostCard from '../components/PostCard';
 import { getDatabase, ref, onValue } from "firebase/database";
 import listTargetObjects from '../utils/listTargetObjects';
+import EmptyWarning from '../components/EmptyWarning';
 
 
 export default function Home({ navigation, route }) {
@@ -74,6 +75,7 @@ export default function Home({ navigation, route }) {
         </ScrollView>
         {posts.map((data) => <PostCard key={data.postUid} navigation={navigation} data={data} />)}
       </ScrollView>
+      {posts.length===0 && <EmptyWarning/>}
     </View>
   );
 }

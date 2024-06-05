@@ -4,6 +4,7 @@ import Header from "../components/Header"
 import PostCard from "../components/PostCard"
 import { getDatabase, ref, onValue } from "firebase/database";
 import listTargetObjects from '../utils/listTargetObjects';
+import EmptyWarning from "../components/EmptyWarning";
 
 export default function MyPosts({navigation, route}){
   const [posts, setPosts] = React.useState([])
@@ -27,6 +28,7 @@ export default function MyPosts({navigation, route}){
         <Header navigation={navigation}/>
         {posts.map((data) => <PostCard key={data.postUid} navigation={navigation} data={data} />)}
       </ScrollView>
+      {posts.length===0 && <EmptyWarning/>}
     </View>
   )
 
