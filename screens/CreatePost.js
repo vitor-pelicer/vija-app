@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { Image, Text, View, ScrollView, TouchableOpacity, ImageBase, StyleSheet} from 'react-native';
+import { Image, Text, View, ScrollView, TouchableOpacity, ImageBase, StyleSheet, Alert} from 'react-native';
 import Header from '../components/Header';
-import LoginScreen from './LoginScreen';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list'
-import { db, auth } from '../services/firebaseConfig';
+import { auth } from '../services/firebaseConfig';
 import StackAccount from '../navigation/StackAccount';
+import { getDatabase, ref, set } from "firebase/database";
+import * as Storage from "firebase/storage";
+import uuid from 'react-native-uuid';
 
 export default function CreatePost() {
 
@@ -17,17 +19,82 @@ export default function CreatePost() {
   const [price, setPrice] = React.useState("");
   const [type, setType] = React.useState("");
   const [image, setImage] = React.useState([]);
-
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async () => {
-    const postData = {
-      title,
-      description,
-      price,
-      type,
-      user_id: auth.currentUser.uid 
-    }
+  setLoading(true);
+  const db = getDatabase();
+  const userId = auth.currentUser.uid;
+  const postUid = uuid.v4();
+  const postPath = 'posts/' + userId + '/' + postUid
+  let images = [];
 
+  try{
+    for(i=0; i<image.length; i++){
+      const blob = await uriToBlob(image[i])
+      const img= await uploadImages(blob, postUid)
+      images.push(img);
+    }
+  } catch (e){
+    Alert.alert("Erro", "Erro ao enviar os dados.");
+    return
+  }
+
+  const postData = {
+    postUid,
+    userId,
+    title,
+    description,
+    price,
+    type,
+    userId,
+    images,
+  }
+
+  set(ref(db, postPath), postData
+  ).then(() => {
+    console.log('Dados enviados com sucesso!');
+    setTitle('');
+    setDescription('');
+    setPrice('');
+    setType('');
+    setImage([])
+    Alert.alert("Anúncio enviado!", "O anúncio foi postado com sucesso.")
+  }).catch((error) => {
+    console.error('Error writing data:', error);
+    throw new Error('Erro ao enviar imagem');
+  });
+  setLoading(false);
+
+}
+
+const uploadImages = async (file, postUid)=>{
+  const storage = Storage.getStorage();
+  const imageName = uuid.v4();
+  const extension = getFileExtension(file)
+  const imagePath = postUid + '/' + imageName + '.' + extension
+  const storageRef = Storage.ref(storage, imagePath);
+
+  await Storage.uploadBytes(storageRef, file ).then((snapshot) => {
+    console.log('Uploaded a blob or file!');
+  }).catch((error) => {
+    console.error('Error uploading image:', error);
+  });
+  const downloadURL = await Storage.getDownloadURL(storageRef);
+  return downloadURL
+
+}
+
+const uriToBlob = async (uri) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  return blob;
+};
+
+function getFileExtension(file) {
+  console.log(file._data.name)
+  const parts = file._data.name.split('.');
+  return parts[parts.length - 1];
 }
 
 
@@ -65,6 +132,11 @@ auth.onAuthStateChanged((user) => {
       {isLoggedIn &&
       <View className={'flex-1 flex flex-col justify-start bg-gray-100'} >
         <Header/>
+        {loading &&
+          <View className={"flex-1 items-center justify-center z-20"}>
+          <ActivityIndicator animating={true} color={'#FF7A00'} />
+          </View>
+        }
         <View className={"flex flex-col items-center"}>
         <TextInput
             mode="outlined"
@@ -74,6 +146,7 @@ auth.onAuthStateChanged((user) => {
             outlineColor="#F6B200"
             selectionColor="#FF7A00"
             activeOutlineColor="#FF7A00"
+            disabled={loading}
             className={"w-[90%]"}
           />
         <TextInput
@@ -86,21 +159,37 @@ auth.onAuthStateChanged((user) => {
           activeOutlineColor="#FF7A00"
           multiline
           numberOfLines={5}
+          disabled={loading}
           className={"w-[90%]"}
         />
-        <View className={"mt-2 w-[90%]"}>
-        <SelectList
-          setSelected={setType}
-          data={data}
-          save="value"
-          fontFamily="Inter-Regular"
-          boxStyles={styles.dropdown}
-          inputStyles={styles.input}
-          dropdownStyles={styles.dropdownList}
-          dropdownItemStyles={styles.dropdownItem}
-          dropdownTextStyles={styles.dropdownText}
+        <TextInput
+          mode="outlined"
+          label="Preço"
+          value={price}
+          onChangeText={text => setPrice(text)}
+          outlineColor="#F6B200"
+          selectionColor="#FF7A00"
+          activeOutlineColor="#FF7A00"
+          keyboardType='decimal-pad'
+          numberOfLines={5}
+          disabled={loading}
+          className={"w-[90%]"}
         />
-        </View>
+        {!loading &&
+          <View className={"mt-2 w-[90%]"}>
+            <SelectList
+              setSelected={setType}
+              data={data}
+              save="value"
+              fontFamily="Inter-Regular"
+              boxStyles={styles.dropdown}
+              inputStyles={styles.input}
+              dropdownStyles={styles.dropdownList}
+              dropdownItemStyles={styles.dropdownItem}
+              dropdownTextStyles={styles.dropdownText}
+            />
+          </View>
+        }
 
         <View className={"flex flex-col space-y-4 items-start w-full"}>
           <Text className={"font-InterRegular text-lg ml-5 mt-5"}> Fotos: {image.length}/5</Text>
@@ -127,6 +216,7 @@ auth.onAuthStateChanged((user) => {
             textColor='#474747'
             onPress={handleSubmit}
             className={"mt-4 w-[90%] h-11"}
+            disabled={loading}
             labelStyle={{ fontSize: 20 }}>
             Postar
           </Button>
