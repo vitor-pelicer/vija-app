@@ -31,14 +31,6 @@ export default function Profile({ navigation, route }) {
             Meus anúncios
           </Button>
           <Button
-            mode="elevated"
-            textColor='#474747'
-            onPress={() => console.log("Apertou")}
-            className={"mt-4 w-[90%] h-11"}
-            labelStyle={{ fontSize: 20 }}>
-            Editar perfil
-          </Button>
-          <Button
             mode="filed"
             textColor='#FFF'
             buttonColor='#ed2b2b'
