@@ -11,7 +11,7 @@ import { getDatabase, ref, set } from "firebase/database";
 import * as Storage from "firebase/storage";
 import uuid from 'react-native-uuid';
 
-export default function CreatePost() {
+export default function CreatePost({ navigation }) {
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(Boolean(auth.currentUser));
   const [title, setTitle] = React.useState("");
@@ -60,12 +60,19 @@ export default function CreatePost() {
     setType('');
     setImage([])
     Alert.alert("Anúncio enviado!", "O anúncio foi postado com sucesso.")
+    navigation.navigate('Home');
   }).catch((error) => {
     console.error('Error writing data:', error);
     throw new Error('Erro ao enviar imagem');
   });
   setLoading(false);
 
+}
+
+function getFileExtension(file) {
+  console.log(file._data.name)
+  const parts = file._data.name.split('.');
+  return parts[parts.length - 1];
 }
 
 const uploadImages = async (file, postUid)=>{
@@ -91,11 +98,7 @@ const uriToBlob = async (uri) => {
   return blob;
 };
 
-function getFileExtension(file) {
-  console.log(file._data.name)
-  const parts = file._data.name.split('.');
-  return parts[parts.length - 1];
-}
+
 
 
 auth.onAuthStateChanged((user) => {
