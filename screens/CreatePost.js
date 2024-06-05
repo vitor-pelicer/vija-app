@@ -20,8 +20,13 @@ export default function CreatePost({ navigation }) {
   const [type, setType] = React.useState("");
   const [image, setImage] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [submited, setSubmited] = React.useState(false);
 
   const handleSubmit = async () => {
+  if(title==='' && description==='' && price ==='' && type === '' && image.length ===0){
+    setSubmited(true);
+    return
+  }
   setLoading(true);
   const db = getDatabase();
   const userId = auth.currentUser.uid;
@@ -158,6 +163,7 @@ auth.onAuthStateChanged((user) => {
             disabled={loading}
             className={"w-[90%]"}
           />
+          {title==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo título não está preenchido</Text>}
         <TextInput
           mode="outlined"
           label="Descrição"
@@ -171,6 +177,7 @@ auth.onAuthStateChanged((user) => {
           disabled={loading}
           className={"w-[90%]"}
         />
+        {description==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo descrição não está preenchido</Text>}
         <TextInput
           mode="outlined"
           label="Preço"
@@ -184,12 +191,15 @@ auth.onAuthStateChanged((user) => {
           disabled={loading}
           className={"w-[90%]"}
         />
+        {price==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo preço não está preenchido</Text>}
         {!loading &&
+          <>
           <View className={"mt-2 w-[90%]"}>
             <SelectList
               setSelected={setType}
               data={data}
               save="value"
+              placeholder='Tipo'
               fontFamily="Inter-Regular"
               boxStyles={styles.dropdown}
               inputStyles={styles.input}
@@ -198,10 +208,13 @@ auth.onAuthStateChanged((user) => {
               dropdownTextStyles={styles.dropdownText}
             />
           </View>
+          {title==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo tipo não está preenchido</Text>}
+          </>
         }
 
         <View className={"flex flex-col space-y-4 items-start w-full"}>
           <Text className={"font-InterRegular text-lg ml-5 mt-5"}> Fotos: {image.length}/5</Text>
+          {image.length===0 && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Carregue ao menos uma foto</Text>}
           <ScrollView horizontal className={"flex-grow-0"}>
             <TouchableOpacity onPress={handleChooseImage} disabled={image.length===5}>
               <View className={"mx-1 p-2 rounded-3xl h-[216px] w-[216px] items-center justify-center bg-slate-300"}>
