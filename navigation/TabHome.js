@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Account from '../screens/Account';
+import StackProfile from './StackProfile';
 import TabBar from '../components/TabBar';
 import StackHome from './StackHome';
 import LoginScreen from '../screens/LoginScreen';
@@ -35,7 +35,7 @@ function TabHome() {
           />
           <Tab.Screen 
           name="Conta"
-          component={Account} 
+          component={StackProfile} 
           options={{
             tabBarIcon: 'person-circle',
             headerShown: false
