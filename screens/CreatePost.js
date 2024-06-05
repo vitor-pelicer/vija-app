@@ -130,6 +130,12 @@ auth.onAuthStateChanged((user) => {
     { key: 5, value: 'eletrodoméstico' },
   ];
 
+  const removeImage = (removedIndex) => {
+    setImage(prevImages => {
+      return prevImages.filter((item, index) => index !== removedIndex);
+    });
+  };
+
   return (
     <>
       {isLoggedIn &&
@@ -207,8 +213,17 @@ auth.onAuthStateChanged((user) => {
               </View>
             </TouchableOpacity>
             {image.map((i, index) => (
-              <View key={index} className={"mx-1 p-2 bg-slate-100 rounded-3xl h-[216px]"}>
+              <View key={index} className={"mx-1 p-2 bg-slate-100 rounded-3xl h-[216px] relative overflow-hidden"}>
               <Image source={{ uri: i }} className={"w-[200px] h-[200px] rounded-2xl"} />
+              <View className={"absolute top-0 right-0 m-2 bg-white rounded-full"}>
+                <TouchableOpacity onPress={()=>removeImage(index)}>
+                  <Ionicons
+                    name={"close-outline"}
+                    size={35}
+                    color={"#F00"}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>)
             )}
           </ScrollView>
