@@ -8,6 +8,7 @@ import Profile from '../screens/Profile';
 import StackAccount from './StackAccount';
 import MyPosts from '../screens/MyPosts';
 import EditPost from '../screens/EditPost';
+import MyLikes from '../screens/MyLikes';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,13 @@ export default function StackProfile() {
           <Stack.Screen 
             name="EditPost"
             component={EditPost} 
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen 
+            name="MyLikes"
+            component={MyLikes} 
             options={{
               headerShown: false
             }}

@@ -7,6 +7,7 @@ import { getDatabase, ref, remove } from "firebase/database";
 export default function PostCard({ navigation, data }){
 
   const route = useRoute();
+  console.log(route.name)
   const [visible, setVisible] = React.useState(false);
 
   const showModal = () => setVisible(true);
@@ -19,7 +20,23 @@ export default function PostCard({ navigation, data }){
   const handlePressMyPosts = ()=>{
     showModal()
   }
-  const handlePress = route.name==='MyPosts' ? handlePressMyPosts : handlePressHomeStack;
+  let handlePress
+  if (route.name === 'MyLikes'){
+    handlePress=()=>{
+      navigation.navigate("HomeStack")
+      navigation.push("PostItem", {data: data})
+    }
+  }
+
+  if (route.name === 'MyPosts'){
+    handlePress=handlePressMyPosts
+  }
+
+  if (route.name === 'HomeStack'){
+    handlePress=handlePressHomeStack
+  }
+
+
 
   const handleEdit= ()=>{
     navigation.navigate('EditPost', {data});

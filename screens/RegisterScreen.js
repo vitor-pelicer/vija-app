@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { TextInput, Button } from 'react-native-paper';
 import { createUserWithEmailAndPassword, updateProfile  } from "firebase/auth";
 import { auth } from "../services/firebaseConfig";
+import { SiOpenhab } from "react-icons/si";
 
 
 export default function RegisterScreen({ navigation, route }){
@@ -12,8 +13,13 @@ export default function RegisterScreen({ navigation, route }){
   const [password, setPassword] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [secureText, setSecureText] = React.useState(true);
+  const [submited, setSubmited] = React.useState(false);
 
   const handleRegister = ()=>{
+    setSubmited(true)
+    if(name==='' ||  email==='' || password===''){
+      return
+    }
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up 
@@ -49,6 +55,7 @@ export default function RegisterScreen({ navigation, route }){
             activeOutlineColor="#FF7A00"
             className={"w-[90%]"}
           />
+          {name==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo nome não está preenchido</Text>}
           <TextInput
             mode="outlined"
             label="Email"
@@ -59,6 +66,7 @@ export default function RegisterScreen({ navigation, route }){
             activeOutlineColor="#FF7A00"
             className={"mt-4 w-[90%]"}
           />
+          {email==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo email não está preenchido</Text>}
           <TextInput
             mode="outlined"
             label="Senha"
@@ -71,6 +79,7 @@ export default function RegisterScreen({ navigation, route }){
             right={<TextInput.Icon icon="eye" onPress={()=>setSecureText(!secureText)}/>}
             className={"w-[90%] mt-4"}
           />
+          {password==='' && submited && <Text className={"font-InterRegular text-sm text-red-600"}>Campo senha não está preenchido</Text>}
           <View className={"flex justify-start w-screen"}>
             <TouchableOpacity onPress={()=> navigation.pop()} className={"ml-6 mt-4"}>
               <Text>Já tenho conta</Text>

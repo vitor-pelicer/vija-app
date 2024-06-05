@@ -23,7 +23,7 @@ export default function CreatePost({ navigation }) {
   const [submited, setSubmited] = React.useState(false);
 
   const handleSubmit = async () => {
-  if(title==='' && description==='' && price ==='' && type === '' && image.length ===0){
+  if(title==='' || description==='' || price ==='' || type === '' || image.length ===0){
     setSubmited(true);
     return
   }
